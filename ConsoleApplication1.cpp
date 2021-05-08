@@ -16,21 +16,16 @@ struct Node               // так как в список уже входят �
 	int f = 0; // частота
 };
 
-void AddFrequency(Node *Arr, char *Str, int sizeStr) // Вычисляет частотность символов
+struct Tree
 {
-	int j = 0;
-	for (int i = 0; i < 255; i++)
-	{
-		while (j != sizeStr)
-		{
-			if (Arr[i].s == Str[j])
-				Arr[i].f++;
-			j++;	
-		}
-		j = 0;
-		//cout << Arr[i].s << " = " << Arr[i].f << endl;
-	}
-}
+	Tree* root;
+	Node* left;
+	Node* right;
+};
+/////////////// создание частности, сортировка и создание списка символов ///////////////
+
+
+
 
 void Shaker(Node* Arr, int size) // Шейкерная сортировка
 {
@@ -75,7 +70,23 @@ void Shaker(Node* Arr, int size) // Шейкерная сортировка
 
 }
 
-Node *Sort(Node* Arr) // выделяем символы с частотами и сортируем по возрастанию
+void AddFrequency(Node *Arr, char *Str, int sizeStr) // Вычисляет частотность символов
+{
+	int j = 0;
+	for (int i = 0; i < 255; i++)
+	{
+		while (j != sizeStr)
+		{
+			if (Arr[i].s == Str[j])
+				Arr[i].f++;
+			j++;	
+		}
+		j = 0;
+		//cout << Arr[i].s << " = " << Arr[i].f << endl;
+	}
+}
+
+list <Node> Sort(Node* Arr) // выделяем символы с частотами и сортируем по возрастанию и добавляем в список
 {
 	int size = 0; // подсчитываем, сколько символов имеют частотность
 	for (int i = 0; i < 255; i++)
@@ -93,15 +104,67 @@ Node *Sort(Node* Arr) // выделяем символы с частотами �
 
 	Shaker(Result, size);
 	
-
+	list <Node> Spisok;
 	for (int i = 0; i < size; i++)
-		cout << Result[i].s << " = " << Result[i].f << endl;
+		Spisok.push_back(Result[i]);
+	
+
+	//for (int i = 0; i < size; i++)
+		//cout << Result[i].s << " = " << Result[i].f << endl;
+
+	return Spisok;
+}
+
+void PrintList(list <Node> A) // проверка списка на правильность
+{
+	Node temp;
+	for (auto i = A.begin(); i != A.end(); i++)
+	{
+		temp = *i;
+		cout << temp.s << " = " << temp.f << endl;
+	}
+}
+
+////////////// построение дерева /////////////
+void SortList(list <Node> A)
+{
+
+
+
+
+}
+
+Node PoolOfNodes(Node A, Node B)
+{
+	Node Result;
+	Result.f = A.f + B.f;
+	Result.L = &A;
+	Result.R = &B;
 
 	return Result;
 }
 
+Tree CreateTree (list <Node> S)
+{
+	int size = S.size();
+	
+	Node temp;
+	while (size != 1);
+	{
+		
 
 
+		size--;
+	}
+	
+
+	
+
+
+
+
+
+}
 
 int main()
 {
@@ -130,18 +193,21 @@ int main()
 	//for (int j = 0; j < size; j++)
 	//	cout << string[j] << ' ';
 	fclose(fi);
-	
-	
+		
 	Node s_Array[255];
 	for (int i = 0; i < 255; i++)
 		s_Array[i].s = (int)i;
 
-	
 	AddFrequency(s_Array, string, size); // вычисляем частоту символов
 
-	Node* SortSymbol = Sort(s_Array); // сортируем и избавляемся от лишних узлов
+	list<Node> Spisok = Sort(s_Array); // сортируем и избавляемся от лишних узлов и добавляем их в список
 	
 	
+
+
+
+
+
 	
 	
 	
