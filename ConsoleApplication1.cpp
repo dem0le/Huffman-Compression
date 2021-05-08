@@ -34,9 +34,29 @@ public:
 		R = B;
 	}
 
+	void CreateTree(list <Node> A)
+	{
+		while (A.size() != 1)
+		{
+			A = SortList(A);
+
+			Node* left = &(A.front());
+			A.pop_front();
+			Node* right = &(A.front());
+			A.pop_front();
+
+			Node NewUzel(left,right);
+
+	   }
+
+
+	}
+
 	friend list <Node> CreateListOfFrequency(string text);
 	friend void PrintList(list <Node> S);
-	friend void SortList(list <Node> S);
+	friend list <Node> SortList(list <Node> S);
+	friend void Shaker(Node* A, int size);
+	
 };
 
 string FileToString(ifstream &file)
@@ -91,12 +111,73 @@ void PrintList(list <Node> S)
 
 }
 
-void SortList(list <Node> S)
+void Shaker(Node* A, int size)
 {
+	int L, R, L1, R1, i;
+	Node tmp;
+	L = 0;
+	R = size - 1;
+	while (L < R)
+	{
+		i = L; // проход слева направо
+		R1 = L;
+		while (i < R)
+		{
+			if (A[i].f > A[i + 1].f)
+			{
+				tmp = A[i];
+				A[i] = A[i + 1];
+				A[i + 1] = tmp;
+				R1 = i;
+			}
+			i++;
+		}
+		R = R1;
+		i = R; // проход справа налево
+		L1 = R;
+		while (i > L)
+		{
+			if (A[i - 1].f > A[i].f)
+			{
+				tmp = A[i];
+				A[i] = A[i - 1];
+				A[i - 1] = tmp;
+				L1 = i;
+			}
+			i--;
+		}
+		L = L1;
+		//cout << L << endl;
+		//cout << R << endl;
+		//cout << *this << endl;
+	}
+
+
+}
+
+list <Node> SortList(list <Node> S)
+{
+	Node* A = new Node[S.size()];
+	int j = 0;
+
+	for (auto i = S.begin(); i != S.end(); i++)
+	{
+		A[j] = *i;
+		j++;
+	}
 	
-		
+	Shaker(A, S.size());
+	int size = S.size();
+
+	list <Node> Result;
+
+	for (int j = 0; j < S.size(); j++)
+		Result.push_back(A[j]);
+	
+	return Result;
 	
 }
+
 
 
 int main()
@@ -105,8 +186,8 @@ int main()
 	ifstream file("Input.txt");
 	string text = FileToString(file);
 	list <Node> Spisok = CreateListOfFrequency(text);
-	SortList(Spisok);
-	//PrintList(Spisok);
+	list <Node> Result = SortList(Spisok);
+	PrintList(Result);
 	
 	
 		
