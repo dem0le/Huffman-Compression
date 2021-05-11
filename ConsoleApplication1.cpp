@@ -4,6 +4,7 @@
 #include <list>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 using namespace std;  // структура котороя помещается в список , вроде работает
 
@@ -14,6 +15,7 @@ private:
 	char s;
 	Node* L;
 	Node* R;
+	char code;
 
 public:
 
@@ -24,6 +26,7 @@ public:
 		s = 0;
 		L = nullptr;
 		R = nullptr;
+		code = 0;
 	}
 
 	Node(Node* A, Node* B)
@@ -32,31 +35,14 @@ public:
 		s = 0;
 		L = A;
 		R = B;
+		code = 0;
 	}
 
-	void CreateTree(list <Node> A)
-	{
-		while (A.size() != 1)
-		{
-			A = SortList(A);
-
-			Node* left = &(A.front());
-			A.pop_front();
-			Node* right = &(A.front());
-			A.pop_front();
-
-			Node NewUzel(left,right);
-
-	   }
-
-
-	}
-
+	friend void CreateTree(list <Node> &A);
 	friend list <Node> CreateListOfFrequency(string text);
 	friend void PrintList(list <Node> S);
-	friend list <Node> SortList(list <Node> S);
+	friend void SortList(list <Node> &S);
 	friend void Shaker(Node* A, int size);
-	
 };
 
 string FileToString(ifstream &file)
@@ -155,7 +141,7 @@ void Shaker(Node* A, int size)
 
 }
 
-list <Node> SortList(list <Node> S)
+void SortList(list <Node> &S)
 {
 	Node* A = new Node[S.size()];
 	int j = 0;
@@ -167,16 +153,31 @@ list <Node> SortList(list <Node> S)
 	}
 	
 	Shaker(A, S.size());
-	int size = S.size();
+	int size = S.size();	
+	S.clear();
 
-	list <Node> Result;
-
-	for (int j = 0; j < S.size(); j++)
-		Result.push_back(A[j]);
-	
-	return Result;
-	
+	for (int i = 0; i < size; i++)
+		S.push_back(A[i]);
 }
+
+void CreateTree(list <Node> &A)
+{
+	while (A.size() != 1)
+	{
+		SortList(A);
+
+		Node left = (A.front());
+		A.pop_front();
+		Node right = (A.front());
+		A.pop_front();
+
+		Node NewUzel(&left, &right);
+		A.push_back(NewUzel);
+	}
+
+
+}
+
 
 
 
@@ -186,10 +187,15 @@ int main()
 	ifstream file("Input.txt");
 	string text = FileToString(file);
 	list <Node> Spisok = CreateListOfFrequency(text);
-	list <Node> Result = SortList(Spisok);
-	PrintList(Result);
+	CreateTree(Spisok);
+	PrintList(Spisok);
+	Node *Root = &Spisok.front();
+
+	
+
 	
 	
+		
 		
 	
 	
